@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% block title %}Pajak 5 Tahunan – SamsatGo{% endblock %}
+{% block content %}
+
+{% if step == '1' or not result %}
+<!-- ===== PAGE HERO ===== -->
+<section class="bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-600 py-20 text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <span class="inline-block px-4 py-1.5 bg-white/20 text-white text-xs font-bold uppercase tracking-widest rounded-full mb-4">STNK 5 Tahunan</span>
+        <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4">Pajak 5 Tahunan</h1>
+        <p class="text-indigo-100 text-lg leading-relaxed mb-6">
+          Jangan tunggu masa berlaku habis! Urus pajak 5 tahunan Anda sekarang untuk mendapatkan STNK dan TNKB baru. Aman di jalan, nyaman di hati.
+        </p>
+        <a href="{{ url_for('informasi') }}" class="inline-flex items-center gap-2 bg-white text-indigo-700 font-semibold px-6 py-3 rounded-xl hover:bg-indigo-50 transition-colors">
+          <i class="fas fa-info-circle"></i> Daftar
+        </a>
+      </div>
+
+      <!-- Form -->
+      <div class="bg-white rounded-2xl shadow-2xl p-8 text-gray-800">
+        <h2 class="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+          <i class="fas fa-id-card text-indigo-600"></i> Permohonan Perpanjangan STNK 5 Tahunan
+        </h2>
+        <p class="text-gray-500 text-sm mb-6">Lengkapi data berikut untuk melanjutkan permohonan.</p>
+
+        <form method="POST" action="{{ url_for('pajak_5_tahunan') }}" enctype="multipart/form-data" class="space-y-5">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">No. Registrasi Kendaraan Bermotor (NRKB) *</label>
+            <input name="nrkb" type="text" placeholder="Contoh: AG 1234 RFS" required
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400/40 focus:border-indigo-500 transition-all">
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">5 Digit Terakhir No. Rangka *</label>
+            <input name="no_rangka" type="text" placeholder="Contoh: 98765" maxlength="5" required
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400/40 focus:border-indigo-500 transition-all">
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">NIK *</label>
+            <input name="nik" type="text" placeholder="16 digit NIK" maxlength="16" required
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400/40 focus:border-indigo-500 transition-all">
+          </div>
+
+          <!-- Upload Photo -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-1.5">Unggah Foto KTP *</label>
+              <label for="foto_ktp" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all">
+                <i class="fas fa-id-card text-gray-400 text-2xl mb-2"></i>
+                <p class="text-sm text-gray-500">Klik untuk unggah KTP</p>
+                <p class="text-xs text-gray-400 mt-1">PNG, JPG, JPEG, WEBP</p>
+                <input id="foto_ktp" name="foto_ktp" type="file" accept="image/*" required class="hidden">
+              </label>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-1.5">Unggah Foto STNK *</label>
+              <label for="foto_stnk" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all">
+                <i class="fas fa-file-lines text-gray-400 text-2xl mb-2"></i>
+                <p class="text-sm text-gray-500">Klik untuk unggah STNK</p>
+                <p class="text-xs text-gray-400 mt-1">PNG, JPG, JPEG, WEBP</p>
+                <input id="foto_stnk" name="foto_stnk" type="file" accept="image/*" required class="hidden">
+              </label>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-1.5">Unggah Foto Kendaraan *</label>
+              <label for="foto_kendaraan" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all">
+                <i class="fas fa-car-side text-gray-400 text-2xl mb-2"></i>
+                <p class="text-sm text-gray-500">Klik untuk unggah kendaraan</p>
+                <p class="text-xs text-gray-400 mt-1">PNG, JPG, JPEG, WEBP</p>
+                <input id="foto_kendaraan" name="foto_kendaraan" type="file" accept="image/*" required class="hidden">
+              </label>
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-1.5">Unggah Foto Hasil Cek Fisik</label>
+              <label for="foto" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-indigo-400 hover:bg-indigo-50 transition-all">
+                <i class="fas fa-cloud-upload-alt text-gray-400 text-2xl mb-2"></i>
+                <p class="text-sm text-gray-500">Klik untuk unggah cek fisik</p>
+                <p class="text-xs text-gray-400 mt-1">Opsional, maks. 5MB</p>
+                <input id="foto" name="foto" type="file" accept="image/*" class="hidden">
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Lokasi Cek Fisik</label>
+            <div class="relative">
+              <select name="lokasi" required class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400/40 focus:border-indigo-500 transition-all appearance-none">
+                <option value="">Pilih Lokasi...</option>
+                <option>Samsat Surabaya Utara</option>
+                <option>Samsat Surabaya Selatan</option>
+                <option>Polres Ngalam</option>
+                <option>Samsat Malang</option>
+                <option>Samsat Sidoarjo</option>
+                <option>Samsat Gresik</option>
+              </select>
+              <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"></i>
+            </div>
+            <button type="button" class="mt-2 text-xs text-indigo-600 font-medium flex items-center gap-1 hover:text-indigo-700">
+              <i class="fas fa-location-crosshairs"></i> Cek Lokasi
+            </button>
+          </div>
+
+          <!-- Tanggal -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Pilih Tanggal Kedatangan</label>
+            <input name="tanggal" type="date" required
+              min="{{ '' }}"
+              class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400/40 focus:border-indigo-500 transition-all">
+          </div>
+
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-colors shadow-md">
+            <i class="fas fa-arrow-right mr-2"></i>Perpanjang STNK
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Info Section -->
+<section class="py-16 bg-white">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-indigo-50 rounded-2xl p-6">
+        <i class="fas fa-clock text-indigo-600 text-2xl mb-3"></i>
+        <h3 class="font-bold text-gray-900 mb-2">Kapan saja, di mana saja</h3>
+        <p class="text-gray-500 text-sm">Ajukan permohonan kapan saja</p>
+      </div>
+      <div class="bg-indigo-50 rounded-2xl p-6">
+        <i class="fas fa-hand-holding-dollar text-indigo-600 text-2xl mb-3"></i>
+        <h3 class="font-bold text-gray-900 mb-2">segalanya dalam genggaman</h3>
+        <p class="text-gray-500 text-sm">Proses mudah dari smartphone</p>
+      </div>
+      <div class="bg-indigo-50 rounded-2xl p-6">
+        <i class="fas fa-list-check text-indigo-600 text-2xl mb-3"></i>
+        <h3 class="font-bold text-gray-900 mb-2">Layanan terpadu dalam satu langkah</h3>
+        <p class="text-gray-500 text-sm">Semua proses dalam satu platform</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% else %}
+<!-- ===== RESULT / DETAIL PERMOHONAN ===== -->
+<section class="bg-gradient-to-br from-indigo-900 to-indigo-600 py-16 text-white">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+      <i class="fas fa-circle-check text-white text-3xl"></i>
+    </div>
+    <h1 class="text-3xl font-extrabold mb-2">Permohonan Berhasil Diajukan</h1>
+    <p class="text-indigo-100">Detail permohonan perpanjangan STNK 5 Tahunan</p>
+  </div>
+</section>
+
+<section class="py-12 bg-gray-50">
+  <div class="max-w-2xl mx-auto px-4">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-6">
+      <div class="bg-indigo-600 px-6 py-4">
+        <h2 class="text-white font-bold text-lg flex items-center gap-2">
+          <i class="fas fa-file-alt"></i> Detail Permohonan
+        </h2>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
+          <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
+            <i class="fas fa-image text-indigo-600"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500 font-medium">Foto Terlampir</p>
+            <p class="font-semibold text-gray-900 text-sm">KTP, STNK, Kendaraan{% if result.get('physical_check_photo_path') %}, Cek Fisik{% endif %}</p>
+          </div>
+          <span class="ml-auto text-xs text-green-600 font-bold bg-green-50 px-2 py-1 rounded-full">Terunggah</span>
+        </div>
+
+        <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
+          <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
+            <i class="fas fa-car text-indigo-600"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500 font-medium">Kendaraan</p>
+            <p class="font-semibold text-gray-900">{{ result.nrkb }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
+          <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
+            <i class="fas fa-location-dot text-indigo-600"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500 font-medium">Lokasi Cek Fisik</p>
+            <p class="font-semibold text-gray-900">{{ result.lokasi }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
+          <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
+            <i class="fas fa-calendar text-indigo-600"></i>
+          </div>
+          <div>
+            <p class="text-xs text-gray-500 font-medium">Tanggal Kedatangan</p>
+            <p class="font-semibold text-gray-900">{{ result.tanggal }}</p>
+          </div>
+        </div>
+
+        <a href="{{ url_for('pembayaran') }}" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 mt-2">
+          <i class="fas fa-credit-card"></i>Lanjutkan Pembayaran {{ result.admin_fee }}
+        </a>
+      </div>
+    </div>
+
+    <a href="{{ url_for('pajak_5_tahunan') }}" class="flex items-center justify-center gap-2 text-indigo-600 font-medium text-sm hover:text-indigo-700">
+      <i class="fas fa-arrow-left"></i> Ajukan Permohonan Baru
+    </a>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}Layanan – SamsatGo{% endblock %}
+{% block content %}
+
+<!-- Page Hero -->
+<section class="bg-gradient-to-br from-brand to-blue-700 py-16 text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <span class="inline-block px-4 py-1.5 bg-white/20 text-white text-xs font-bold uppercase tracking-widest rounded-full mb-4">Semua Layanan</span>
+    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">LAYANAN</h1>
+    <p class="text-blue-100 max-w-lg mx-auto">Pilih layanan yang Anda butuhkan. Semua tersedia dalam satu platform.</p>
+  </div>
+</section>
+
+<!-- ===== Layanan Cards ===== -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="space-y-6">
+
+      <!-- Pajak Tahunan -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3 items-center">
+          <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-8 flex items-center justify-center min-h-40">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-brand rounded-2xl flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-receipt text-white text-2xl"></i>
+              </div>
+              <p class="text-brand font-bold text-sm">Pajak Tahunan</p>
+            </div>
+          </div>
+          <div class="p-8 md:col-span-2">
+            <h2 class="text-xl font-bold text-gray-900 mb-3">Pajak Tahunan</h2>
+            <p class="text-gray-600 leading-relaxed mb-5">
+              Cek dan bayar pajak kendaraan bermotor tahunan Anda dengan mudah dari mana saja. Dapatkan e-TBPKP secara real-time tanpa perlu antre di kantor.
+            </p>
+            <div class="bg-blue-50 rounded-xl p-4 mb-5">
+              <p class="text-sm font-semibold text-gray-700 mb-2">Cara Kerja:</p>
+              <ol class="space-y-1 text-sm text-gray-600">
+                <li class="flex items-start gap-2"><span class="bg-brand text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</span>Daftar &amp; login pakai NIK + verifikasi</li>
+                <li class="flex items-start gap-2"><span class="bg-brand text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">2</span>Pilih Cek Pajak Tahunan</li>
+                <li class="flex items-start gap-2"><span class="bg-brand text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">3</span>Tambah kendaraan (plat &amp; nomor rangka)</li>
+                <li class="flex items-start gap-2"><span class="bg-brand text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">4</span>Cek tagihan lalu bayar (VA / e-wallet)</li>
+                <li class="flex items-start gap-2"><span class="bg-brand text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">5</span>Dapat bukti bayar (E-TBPKP + pengesahan digital)</li>
+              </ol>
+            </div>
+            <a href="{{ url_for('cek_pajak') }}" class="inline-flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-semibold px-6 py-3 rounded-xl transition-colors">
+              Akses Layanan <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pajak 5 Tahunan -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3 items-center">
+          <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 p-8 flex items-center justify-center min-h-40">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-id-card text-white text-2xl"></i>
+              </div>
+              <p class="text-indigo-700 font-bold text-sm">Pajak 5 Tahunan</p>
+            </div>
+          </div>
+          <div class="p-8 md:col-span-2">
+            <h2 class="text-xl font-bold text-gray-900 mb-3">Pajak 5 Tahunan</h2>
+            <p class="text-gray-600 leading-relaxed mb-5">
+              Layanan perpanjangan STNK dan penggantian plat nomor (TNKB). Lihat panduan lengkap dan syarat cek fisik kendaraan sebelum datang ke Samsat.
+            </p>
+            <div class="bg-indigo-50 rounded-xl p-4 mb-5">
+              <p class="text-sm font-semibold text-gray-700 mb-2">Cara Kerja:</p>
+              <ol class="space-y-1 text-sm text-gray-600">
+                <li class="flex items-start gap-2"><span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</span>Daftar &amp; login pakai NIK + verifikasi</li>
+                <li class="flex items-start gap-2"><span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">2</span>Pilih Cek Pajak 5 Tahunan</li>
+                <li class="flex items-start gap-2"><span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">3</span>Unggah foto hasil cek fisik</li>
+                <li class="flex items-start gap-2"><span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">4</span>Pilih lokasi cek fisik</li>
+                <li class="flex items-start gap-2"><span class="bg-indigo-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">5</span>Pilih tanggal kedatangan → Perpanjangan STNK</li>
+              </ol>
+            </div>
+            <a href="{{ url_for('pajak_5_tahunan') }}" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors">
+              Akses Layanan <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cek Denda -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-shadow overflow-hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3 items-center">
+          <div class="bg-gradient-to-br from-red-50 to-orange-50 p-8 flex items-center justify-center min-h-40">
+            <div class="text-center">
+              <div class="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-gavel text-white text-2xl"></i>
+              </div>
+              <p class="text-red-600 font-bold text-sm">Cek Denda</p>
+            </div>
+          </div>
+          <div class="p-8 md:col-span-2">
+            <h2 class="text-xl font-bold text-gray-900 mb-3">Cek Denda</h2>
+            <p class="text-gray-600 leading-relaxed mb-5">
+              Pantau status pelanggaran lalu lintas dan denda e-Tilang (ETLE) kendaraan Anda. Segera selesaikan tagihan untuk menghindari pemblokiran data STNK.
+            </p>
+            <div class="bg-red-50 rounded-xl p-4 mb-5">
+              <p class="text-sm font-semibold text-gray-700 mb-2">Cara Kerja:</p>
+              <ol class="space-y-1 text-sm text-gray-600">
+                <li class="flex items-start gap-2"><span class="bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">1</span>Daftar &amp; login pakai NIK + verifikasi</li>
+                <li class="flex items-start gap-2"><span class="bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">2</span>Pilih "Cek denda"</li>
+                <li class="flex items-start gap-2"><span class="bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">3</span>Cek status pelanggaran &amp; denda</li>
+                <li class="flex items-start gap-2"><span class="bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">4</span>Lihat detail denda</li>
+                <li class="flex items-start gap-2"><span class="bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0 mt-0.5">5</span>Lanjutkan pembayaran jika ingin bayar</li>
+              </ol>
+            </div>
+            <a href="{{ url_for('cek_denda') }}" class="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors">
+              Akses Layanan <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Bottom CTA -->
+<section class="bg-gradient-to-r from-brand to-blue-600 py-16 text-white text-center">
+  <div class="max-w-2xl mx-auto px-4">
+    <p class="text-blue-100 font-semibold text-sm uppercase tracking-widest mb-3">Kapan saja, di mana saja</p>
+    <h2 class="text-3xl font-extrabold mb-4">segalanya dalam genggaman.<br>Layanan terpadu dalam satu langkah.</h2>
+    {% if not session.get('user') %}
+    <a href="{{ url_for('register') }}" class="inline-flex items-center gap-2 bg-white text-brand font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition-colors mt-4">
+      <i class="fas fa-rocket"></i> Daftar Sekarang
+    </a>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

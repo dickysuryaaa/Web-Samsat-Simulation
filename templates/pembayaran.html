@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block title %}Pembayaran - SamsatGo{% endblock %}
+{% block extra_head %}
+{% if midtrans_client_key %}
+<script src="https://app{% if not config.MIDTRANS_IS_PRODUCTION %}.sandbox{% endif %}.midtrans.com/snap/snap.js" data-client-key="{{ midtrans_client_key }}"></script>
+{% endif %}
+{% endblock %}
+{% block content %}
+
+<section class="bg-gradient-to-br from-blue-900 to-brand py-12 text-white">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h1 class="text-3xl font-extrabold mb-2">Pembayaran</h1>
+    <p class="text-blue-100">Selesaikan pajak kendaraan dan denda ETLE melalui Midtrans Snap</p>
+  </div>
+</section>
+
+<section class="py-12 bg-gray-50">
+  <div class="max-w-5xl mx-auto px-4">
+    {% if payment_demo_mode %}
+    <div class="mb-6 bg-blue-50 border border-blue-200 text-blue-800 rounded-xl p-4 text-sm">
+      <strong>Mode pembayaran demo aktif.</strong> Transaksi lokal akan langsung ditandai lunas. Isi <code>MIDTRANS_SERVER_KEY</code> dan <code>MIDTRANS_CLIENT_KEY</code> di <code>.env</code> untuk memakai Snap asli.
+    </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div class="lg:col-span-2 space-y-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <h2 class="text-lg font-bold text-gray-900 mb-5">Tagihan Pajak Kendaraan</h2>
+
+          {% if tax_records %}
+          <div class="space-y-4">
+            {% for tax in tax_records %}
+            <div class="border border-gray-100 rounded-xl p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <p class="font-bold text-gray-900">{{ tax.vehicle.plate_number }} - {{ tax.vehicle.brand }} {{ tax.vehicle.model }}</p>
+                <p class="text-sm text-gray-500">Pajak tahun {{ tax.tax_year }}{% if tax.due_date %} jatuh tempo {{ tax.due_date.strftime('%d/%m/%Y') }}{% endif %}</p>
+              </div>
+              <div class="md:text-right">
+                <p class="text-brand text-xl font-extrabold">{{ tax.total_amount|rupiah }}</p>
+                <button type="button" data-kind="tax" data-id="{{ tax.id }}" class="pay-button mt-2 bg-brand hover:bg-brand-dark text-white font-bold px-5 py-2.5 rounded-xl transition-colors">
+                  Bayar Pajak
+                </button>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="text-sm text-gray-500">Tidak ada tagihan pajak aktif untuk akun Anda.</p>
+          {% endif %}
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <h2 class="text-lg font-bold text-gray-900 mb-5">Denda / Tilang</h2>
+
+          {% if fines %}
+          <div class="space-y-4">
+            {% for fine in fines %}
+            <div class="border border-gray-100 rounded-xl p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <p class="font-bold text-gray-900">{{ fine.vehicle.plate_number }} - {{ fine.description }}</p>
+                <p class="text-sm text-gray-500">{{ fine.location or 'Lokasi tidak tersedia' }}{% if fine.violation_date %} - {{ fine.violation_date.strftime('%d/%m/%Y') }}{% endif %}</p>
+              </div>
+              <div class="md:text-right">
+                <p class="text-red-600 text-xl font-extrabold">{{ fine.amount|rupiah }}</p>
+                <button type="button" data-kind="fine" data-id="{{ fine.id }}" class="pay-button mt-2 bg-red-500 hover:bg-red-600 text-white font-bold px-5 py-2.5 rounded-xl transition-colors">
+                  Bayar Denda
+                </button>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="text-sm text-gray-500">Tidak ada denda aktif untuk akun Anda.</p>
+          {% endif %}
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <h2 class="text-lg font-bold text-gray-900 mb-5">Permohonan STNK 5 Tahunan</h2>
+
+          {% if stnk_applications %}
+          <div class="space-y-4">
+            {% for application in stnk_applications %}
+            <div class="border border-gray-100 rounded-xl p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div>
+                <p class="font-bold text-gray-900">{{ application.vehicle.plate_number }} - {{ application.location }}</p>
+                <p class="text-sm text-gray-500">Jadwal {{ application.appointment_date.strftime('%d/%m/%Y') }} - status {{ application.status }}</p>
+              </div>
+              <div class="md:text-right">
+                <p class="text-indigo-600 text-xl font-extrabold">{{ application.admin_fee|rupiah }}</p>
+                <button type="button" data-kind="stnk" data-id="{{ application.id }}" class="pay-button mt-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2.5 rounded-xl transition-colors">
+                  Bayar STNK
+                </button>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="text-sm text-gray-500">Tidak ada permohonan STNK yang menunggu pembayaran.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <aside class="space-y-4">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-24">
+          <h2 class="text-lg font-bold text-gray-900 mb-4">Status Integrasi</h2>
+          <div class="space-y-3 text-sm">
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">Database</span>
+              <span class="font-semibold text-green-600">SQLAlchemy</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">Gateway</span>
+              <span class="font-semibold {% if is_midtrans_configured %}text-green-600{% else %}text-blue-600{% endif %}">
+                {% if is_midtrans_configured %}Midtrans aktif{% else %}Demo lokal{% endif %}
+              </span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-gray-600">Mode</span>
+              <span class="font-semibold">{{ 'Production' if config.MIDTRANS_IS_PRODUCTION else 'Sandbox' }}</span>
+            </div>
+          </div>
+          <p id="payment-message" class="hidden mt-4 text-sm rounded-xl p-3"></p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+{% block extra_scripts %}
+<script>
+  const csrfToken = "{{ csrf_token() }}";
+  const messageBox = document.getElementById("payment-message");
+
+  function showPaymentMessage(text, type = "info") {
+    messageBox.textContent = text;
+    messageBox.className = "mt-4 text-sm rounded-xl p-3 " + (
+      type === "error"
+        ? "bg-red-50 text-red-700 border border-red-200"
+        : "bg-blue-50 text-blue-700 border border-blue-200"
+    );
+  }
+
+  document.querySelectorAll(".pay-button").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const kind = button.dataset.kind;
+      const id = button.dataset.id;
+      const endpoint = `/payments/${kind}/${id}/create`;
+
+      button.disabled = true;
+      button.textContent = "Memproses...";
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken
+          }
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Gagal membuat transaksi.");
+        }
+
+        if (data.demo_paid) {
+          showPaymentMessage("Pembayaran demo berhasil. Status tagihan diperbarui.");
+          setTimeout(() => window.location.reload(), 900);
+          return;
+        }
+
+        if (!window.snap) {
+          showPaymentMessage("Snap Midtrans belum tersedia. Periksa MIDTRANS_CLIENT_KEY.", "error");
+          return;
+        }
+
+        window.snap.pay(data.snap_token, {
+          onSuccess: () => window.location.reload(),
+          onPending: () => window.location.reload(),
+          onError: () => showPaymentMessage("Pembayaran gagal diproses.", "error"),
+          onClose: () => showPaymentMessage("Popup pembayaran ditutup sebelum selesai.")
+        });
+      } catch (error) {
+        showPaymentMessage(error.message, "error");
+      } finally {
+        button.disabled = false;
+        button.textContent = kind === "tax" ? "Bayar Pajak" : (kind === "fine" ? "Bayar Denda" : "Bayar STNK");
+      }
+    });
+  });
+</script>
+{% endblock %}
